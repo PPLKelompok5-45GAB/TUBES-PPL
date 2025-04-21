@@ -1,0 +1,20 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+    level: max
+    paths:
+        - app
+        - routes
+        - tests
+    ignoreErrors:
+        - '#Call to an undefined method [a-zA-Z0-9_\\]+::factory\(\)#'
+        - '#should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\Factory\\|Illuminate\\Contracts\\View\\View#'
+        - '#Call to an undefined method Illuminate\\Http\\RedirectResponse\\|Illuminate\\Routing\\Redirector::(back|route|with|intended)#'
+        - '#Call to function is_int\\(\\) with int will always evaluate to true#'
+        - '#Call to function is_numeric\\(\\) with \\*NEVER\\* will always evaluate to true#'
+        - '#Cannot call method only\(\) on mixed#'
+        - '#Cannot access property \$id on mixed#'
+        - '#Static call to instance method App\\Models\\(Buku|Member|Log_Pinjam_Buku)::count\(\)#'
+        - '#Call to an undefined method object::update#'
+    treatPhpDocTypesAsCertain: false
