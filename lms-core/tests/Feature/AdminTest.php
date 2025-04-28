@@ -16,3 +16,4 @@ class AdminTest extends TestCase
         $this->assertInstanceOf(Admin::class, $admin);
     }
 }
+#hai
