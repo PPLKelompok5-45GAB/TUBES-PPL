@@ -1,0 +1,8 @@
+[
+    {
+        "level": "SEVERE",
+        "message": "http:\/\/libralink2.test\/assets\/js\/argon-dashboard.js 21410:10 Uncaught Error: no element is specified to initialize PerfectScrollbar",
+        "source": "javascript",
+        "timestamp": 1746376834789
+    }
+]
