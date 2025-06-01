@@ -16,4 +16,3 @@ class BukuTest extends TestCase
         $this->assertInstanceOf(\App\Models\Buku::class, $buku);
     }
 }
-#tes
