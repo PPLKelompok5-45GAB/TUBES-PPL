@@ -1,3 +1,4 @@
+<!-- change -->
 @extends('layouts.app')
 @section('title', 'Borrow Entry Details')
 @section('content')
