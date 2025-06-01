@@ -35,4 +35,3 @@ class BookCollectionTest extends TestCase
     }
 }
 
-#hai
