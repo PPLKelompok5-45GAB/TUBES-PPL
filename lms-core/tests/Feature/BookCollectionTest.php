@@ -34,3 +34,4 @@ class BookCollectionTest extends TestCase
         $this->assertDatabaseHas('book_collections', ['name' => 'Test Collection']);
     }
 }
+
