@@ -49,14 +49,17 @@ class RegisteredUserController extends Controller
 
             if ($user->role === 'Member') {
                 \App\Models\Member::create([
+                    'user_id' => $user->id,
                     'name' => $user->username,
                     'email' => $user->email,
-                    'status' => 'active',
+                    'phone' => '', // or $request->input('phone') if available
+                    'address' => '', // or $request->input('address') if available
                     'membership_date' => now(),
+                    'status' => 'active',
                 ]);
             } elseif ($user->role === 'Admin') {
                 \App\Models\Admin::create([
-                    'admin_id' => $user->id,
+                    'user_id' => $user->id,
                     'name' => $user->username,
                     'email' => $user->email,
                     'phone' => '', // or $request->input('phone') if available

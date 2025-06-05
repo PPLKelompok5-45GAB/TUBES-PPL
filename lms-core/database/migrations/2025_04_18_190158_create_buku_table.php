@@ -19,8 +19,12 @@ return new class () extends Migration {
             $table->year('publication_year')->nullable();
             $table->string('publisher', 255)->nullable();
             $table->integer('total_stock')->default(0);
+            $table->integer('stock')->default(0);
+            $table->text('description')->nullable();
+            $table->text('synopsis')->nullable();
             $table->integer('borrowed_qty')->default(0);
             $table->integer('available_qty')->default(0);
+            $table->string('image', 255)->nullable();
             $table->foreign('category_id')->references('category_id')->on('kategori')->onDelete('set null');
             $table->timestamps();
         });

@@ -1,0 +1,285 @@
+/* Custom Table Styling for Libralink2 */
+
+/* Table container styling */
+.table-container {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+    overflow: hidden;
+}
+
+/* Table header styling */
+.table thead th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    color: #fb6340;
+    border-bottom: 2px solid #e9ecef;
+    position: relative;
+}
+
+/* Add subtle separation between header cells */
+.table thead th:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background-color: #e9ecef;
+}
+
+/* Libralink specific table styling - complete redesign */
+.table-responsive {
+    overflow: visible !important;
+}
+
+.table-header-wrapper {
+    position: relative;
+    overflow: visible;
+}
+
+.libralink-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Table header styling */
+.libralink-table thead {
+    background-color: #ff5a30; /* More vibrant orange */
+    display: table-header-group;
+}
+
+.libralink-table thead tr {
+    height: 48px;
+}
+
+.libralink-table thead th {
+    color: white;
+    font-weight: 600;
+    padding: 12px 16px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    border: none;
+    text-align: left;
+    position: relative;
+}
+
+/* Add subtle separation between header cells */
+.libralink-table thead th:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Table body styling */
+.libralink-table tbody {
+    display: table-row-group;
+}
+
+.libralink-table tbody tr {
+    border-bottom: 1px solid #f2f2f2;
+    height: 60px;
+}
+
+.libralink-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.libralink-table tbody td {
+    padding: 16px;
+    vertical-align: middle;
+}
+
+/* Add margin between header and first row */
+.libralink-table tbody::before {
+    content: '';
+    display: table-row;
+    height: 10px;
+}
+
+/* These styles are already defined above */
+
+/* Ensure avatar styling matches the screenshot */
+.libralink-table .avatar-sm {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.9rem;
+}
+
+/* Status dropdown styling */
+.libralink-table select.form-select-sm {
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-color: #e9ecef;
+}
+
+/* Action buttons styling */
+.libralink-table .btn {
+    border-radius: 4px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Table body styling */
+.table tbody td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f6f9fc;
+    color: #525f7f;
+    font-size: 0.875rem;
+}
+
+/* Table row hover effect */
+.table-hover tbody tr:hover {
+    background-color: #f6f9fc;
+}
+
+/* Status badges */
+.table .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+}
+
+/* Action buttons in tables */
+.table .btn-action {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    margin-right: 0.25rem;
+}
+
+/* Table footer styling */
+.table-footer {
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Empty state styling */
+.table-empty-state {
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.table-empty-state i {
+    font-size: 3rem;
+    color: #adb5bd;
+    margin-bottom: 1rem;
+}
+
+.table-empty-state h4 {
+    font-weight: 600;
+    color: #525f7f;
+    margin-bottom: 0.5rem;
+}
+
+.table-empty-state p {
+    color: #8898aa;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .table-responsive {
+        border: 0;
+    }
+    
+    .table thead th {
+        padding: 0.75rem 1rem;
+    }
+    
+    .table tbody td {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* Avatar styling in tables */
+.table .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.75rem;
+}
+
+.table .avatar-group {
+    display: flex;
+}
+
+.table .avatar-group .avatar {
+    margin-left: -0.5rem;
+    border: 2px solid #fff;
+}
+
+.table .avatar-group .avatar:first-child {
+    margin-left: 0;
+}
+
+/* Table card integration */
+.card .table {
+    margin-bottom: 0;
+}
+
+.card .table th:first-child,
+.card .table td:first-child {
+    padding-left: 1.5rem;
+}
+
+.card .table th:last-child,
+.card .table td:last-child {
+    padding-right: 1.5rem;
+}
+
+/* Table filter section */
+.table-filter {
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Table actions section */
+.table-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Table title */
+.table-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #32325d;
+    margin-bottom: 0;
+}
+
+/* Checkbox styling */
+.table .form-check {
+    margin: 0;
+}
+
+.table .form-check-input {
+    margin-top: 0;
+}

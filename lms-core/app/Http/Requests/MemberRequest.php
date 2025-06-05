@@ -33,7 +33,7 @@ class MemberRequest extends FormRequest
             ],
             'phone' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:255'],
-            'status' => ['required', 'in:active,suspended,inactive'],
+            'status' => ['required', 'in:active,inactive,suspended'],
             'membership_date' => ['required', 'date'],
         ];
     }

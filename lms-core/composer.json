@@ -5,13 +5,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "repositories": [
-        {
-            "type": "path",
-            "url": "../src",
-            "options": {
-                "symlink": true
-            }
-        }
+        
     ],
     "require": {
         "php": "^8.1",

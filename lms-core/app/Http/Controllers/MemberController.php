@@ -93,16 +93,39 @@ class MemberController extends Controller
     /**
      * Update the specified member in storage.
      *
-     * @param  MemberRequest  $request
+     * @param  Request  $request
      * @param  Member  $member
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(MemberRequest $request, Member $member)
+    public function update(Request $request, Member $member)
     {
-        /** @var array<string, mixed> $attributes */
-        $attributes = $request->only(['name', 'email', 'status', 'membership_date', 'phone', 'address']);
-        $member->update($attributes);
-        return redirect()->route('members.index')->with('status', 'Member updated.');
+        // Check if this is a status-only update
+        if ($request->has('update_status_only')) {
+            // Validate only the status field
+            $validated = $request->validate([
+                'status' => ['required', 'in:active,inactive,suspended'],
+            ]);
+            
+            $member->update(['status' => $validated['status']]);
+            return back()->with('status', 'Member status updated.');
+        } else {
+            // For member updates from the modal, we only update specific fields
+            // We exclude name and email as they should not be editable
+            $validated = $request->validate([
+                'phone' => ['nullable', 'string', 'max:20'],
+                'address' => ['nullable', 'string', 'max:255'],
+                'status' => ['required', 'in:active,inactive,suspended'],
+            ]);
+            
+            // Only update the fields that are editable
+            $member->update($validated);
+            
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Member updated successfully']);
+            }
+            
+            return redirect()->route('members.index')->with('status', 'Member updated.');
+        }
     }
 
     /**

@@ -55,6 +55,12 @@ class Log_Pinjam_Buku extends Model
         'loan_id', 'book_id', 'member_id', 'borrow_date', 'due_date', 'return_date', 'status', 'overdue_count',
     ];
 
+    protected $casts = [
+        'borrow_date' => 'datetime',
+        'due_date' => 'datetime',
+        'return_date' => 'datetime',
+    ];
+
     // Relationships
     /**
      * Get the book for the loan log.

@@ -22,8 +22,8 @@ class BookRequest extends FormRequest
      */
     public function rules(): array
     {
-        $bookRoute = $this->route('book');
-        $bookId = (is_object($bookRoute) && property_exists($bookRoute, 'buku_id')) ? $bookRoute->buku_id : null;
+        $book = $this->route('book');
+        $bookId = $book ? (is_object($book) && property_exists($book, 'book_id') ? $book->book_id : $book) : null;
         return [
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -31,11 +31,13 @@ class BookRequest extends FormRequest
                 'required',
                 'string',
                 'max:20',
-                Rule::unique('buku', 'isbn')->ignore($bookId, 'buku_id'),
+                Rule::unique('buku', 'isbn')->ignore($bookId, 'book_id'),
             ],
             'category_id' => 'required|exists:kategori,category_id',
-            'stock' => 'required|integer|min:0',
+            'total_stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'synopsis' => 'nullable|string',
         ];
     }
 }

@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $total_stock
  * @property int $borrowed_qty
  * @property int $available_qty
+ * @property string $synopsis
+ * @property string $image
  *
  * @method static static create(array<string, mixed> $attributes = [])
  * @method static static|null find(mixed $id, array<int, string> $columns = ['*'])
@@ -47,7 +49,7 @@ class Buku extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     protected $fillable = [
-        'book_id', 'category_id', 'title', 'author', 'isbn', 'publication_year', 'publisher', 'total_stock', 'borrowed_qty', 'available_qty',
+        'book_id', 'category_id', 'title', 'author', 'isbn', 'publication_year', 'publisher', 'total_stock', 'borrowed_qty', 'available_qty', 'synopsis', 'image',
     ];
 
     // Relationships
@@ -192,5 +194,29 @@ class Buku extends Model
     public function scopeAvailableQtyGreaterThan(\Illuminate\Database\Eloquent\Builder $query, int $minQty): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('available_qty', '>', $minQty);
+    }
+
+    /**
+     * Check if the book is available for borrowing.
+     *
+     * @return bool
+     */
+    public function isAvailableForBorrowing(): bool
+    {
+        return $this->available_qty > 0;
+    }
+
+    /**
+     * Check if the book is already borrowed by a specific member.
+     *
+     * @param int $memberId
+     * @return bool
+     */
+    public function isAlreadyBorrowedBy(int $memberId): bool
+    {
+        return $this->logPinjams()
+            ->where('member_id', $memberId)
+            ->whereIn('status', ['pending', 'approved', 'overdue'])
+            ->exists();
     }
 }

@@ -1,0 +1,83 @@
+/* Custom search filter styling */
+.search-filter-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Search input styling */
+.search-input-group {
+    background-color: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.search-input-group:focus-within {
+    border-color: #ff5a30;
+    box-shadow: 0 0 0 2px rgba(255, 90, 48, 0.15);
+}
+
+.search-input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    color: #8898aa;
+}
+
+.search-input-group .form-control {
+    background-color: transparent;
+    border: none;
+    font-size: 0.9rem;
+    box-shadow: none;
+}
+
+.search-input-group .form-control:focus {
+    box-shadow: none;
+}
+
+/* Filter select styling */
+.filter-select {
+    background-color: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.filter-select:focus {
+    border-color: #ff5a30;
+    box-shadow: 0 0 0 2px rgba(255, 90, 48, 0.15);
+}
+
+/* Filter button styling */
+.filter-btn {
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.filter-btn-primary {
+    background-color: #ff5a30;
+    border-color: #ff5a30;
+}
+
+.filter-btn-primary:hover {
+    background-color: #ff4717;
+    border-color: #ff4717;
+}
+
+.filter-btn-reset {
+    background-color: white;
+    border-color: #e9ecef;
+    color: #8898aa;
+}
+
+.filter-btn-reset:hover {
+    background-color: #f9fafb;
+    border-color: #d2d8e2;
+    color: #6c757d;
+}

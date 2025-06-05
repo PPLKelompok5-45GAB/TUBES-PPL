@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Member;
 
 /**
  * Class User
@@ -94,5 +95,13 @@ class User extends Authenticatable
     public function setPasswordAttribute(string $value): void
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * Get the member profile associated with the user (if any).
+     */
+    public function member()
+    {
+        return $this->hasOne(Member::class, 'email', 'email');
     }
 }

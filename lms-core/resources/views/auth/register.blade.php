@@ -10,8 +10,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-5 text-center mx-auto">
                         <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-                        <p class="text-lead text-white">Use these awesome forms to login or create new account in your
-                            project for free.</p>
+                        <p class="text-lead text-white">Register to create an account and access our library</p>
                     </div>
                 </div>
             </div>
@@ -47,6 +46,10 @@
                                 <div class="flex flex-col mb-3">
                                     <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password">
                                     @error('password') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
+                                </div>
+                                <div class="flex flex-col mb-3">
+                                    <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password">
+                                    @error('password_confirmation') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>

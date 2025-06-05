@@ -27,13 +27,6 @@ class Kategori extends Model
 
     protected $keyType = 'int';
 
-    /**
-     * The name of the category.
-     *
-     * @var string
-     */
-    public string $category_name;
-
     // Relationships
     /**
      * Get the books for the category.

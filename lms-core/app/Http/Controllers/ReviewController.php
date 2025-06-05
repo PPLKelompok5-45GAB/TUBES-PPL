@@ -16,12 +16,43 @@ class ReviewController extends Controller
     /**
      * Display a listing of the reviews.
      *
+     * @param  Request  $request
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reviews = Review_Buku::with(['buku', 'member'])->orderByDesc('created_at')->paginate(10);
-
+        $query = \App\Models\Review_Buku::query()->with(['buku', 'member']);
+        $user = auth()->user();
+        
+        // Only filter by member_id if the user is a Member (Admin should see all reviews)
+        if ($user && $user->role === 'Member' && $user->member) {
+            $query->where('member_id', $user->member->member_id);
+        }
+        
+        if ($request->filled('search')) {
+            $search = $request->input('search', '');
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('buku', function ($qb) use ($search) {
+                    $qb->where('title', 'like', "%$search%")
+                        ->orWhere('author', 'like', "%$search%");
+                })
+                ->orWhereHas('member', function ($qm) use ($search) {
+                    $qm->where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%");
+                })
+                ->orWhere('review_text', 'like', "%$search%");
+            });
+        }
+        
+        $reviews = $query->orderByDesc('created_at')->paginate(10)->appends($request->all());
+        
+        // Determine which view to use based on user role and route
+        $routeName = request()->route()->getName();
+        
+        if ($routeName === 'admin.reviews.index') {
+            return view('vendor.argon.reviews.admin-index', compact('reviews'));
+        }
+        
         return view('vendor.argon.reviews.index', compact('reviews'));
     }
 
@@ -40,16 +71,61 @@ class ReviewController extends Controller
     /**
      * Store a newly created review in storage.
      *
-     * @param  ReviewRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @return RedirectResponse
      */
-    public function store(ReviewRequest $request)
+    public function store(Request $request): RedirectResponse
     {
-        /** @var array<string, mixed> $attributes */
-        $attributes = $request->only(['member_id', 'book_id', 'review_text', 'review_date']);
-        Review_Buku::create($attributes);
+        $validated = $request->validate([
+            'book_id' => 'required|exists:buku,book_id',
+            'member_id' => 'required|exists:member,member_id',
+            'rating' => 'required|numeric|min:1|max:5',
+            'review_text' => 'required|string|max:1000',
+        ]);
+        
+        // Security check: Ensure the member_id belongs to the current user if not admin
+        $user = auth()->user();
+        if ($user->role !== 'Admin' && $user->member && $user->member->member_id != $validated['member_id']) {
+            return redirect()->back()->withErrors([
+                'member_id' => 'You can only submit reviews for your own account.'
+            ])->withInput();
+        }
+        
+        // Verify that the member has borrowed and returned this book
+        $hasBorrowed = $this->verifyBorrowedByMember($validated['book_id'], $validated['member_id']);
+        
+        if (!$hasBorrowed) {
+            // Check if currently borrowing
+            $currentlyBorrowing = \App\Models\Log_Pinjam_Buku::where('book_id', $validated['book_id'])
+                ->where('member_id', $validated['member_id'])
+                ->whereIn('status', ['pending', 'approved', 'overdue'])
+                ->exists();
+                
+            $message = $currentlyBorrowing 
+                ? 'You can only review this book after you return it.' 
+                : 'You can only review books that you have borrowed and returned.';
+                
+            return redirect()->back()->withErrors([
+                'book_id' => $message
+            ])->withInput();
+        }
+        
+        // Check for existing review
+        $existingReview = Review_Buku::where('book_id', $validated['book_id'])
+            ->where('member_id', $validated['member_id'])
+            ->first();
+            
+        if ($existingReview) {
+            return redirect()->back()->withErrors([
+                'book_id' => 'You have already reviewed this book. You can edit your existing review instead.'
+            ])->withInput();
+        }
 
-        return back()->with('status', 'Review submitted.');
+        // Add review date and create review
+        $validated['review_date'] = now();
+        Review_Buku::create($validated);
+
+        return redirect()->route('reviews.index')->with('status', 'Review added successfully.');
     }
 
     /**
@@ -72,10 +148,19 @@ class ReviewController extends Controller
      */
     public function update(ReviewRequest $request, Review_Buku $review)
     {
-        /** @var array<string, mixed> $attributes */
-        $attributes = $request->only(['review_text', 'review_date']);
+        // Security check: Ensure the user can only edit their own reviews unless they're an admin
+        $user = auth()->user();
+        if ($user->role !== 'Admin' && $user->member && $user->member->member_id != $review->member_id) {
+            return redirect()->back()->withErrors([
+                'error' => 'You can only edit your own reviews.'
+            ]);
+        }
+        
+        $attributes = $request->only(['review_text', 'rating']);
+        $attributes['review_date'] = now(); // Update the review date
+        
         $review->update($attributes);
-        return back()->with('status', 'Review updated.');
+        return back()->with('status', 'Review updated successfully.');
     }
 
     /**
@@ -86,8 +171,31 @@ class ReviewController extends Controller
      */
     public function destroy(Review_Buku $review)
     {
+        // Security check: Ensure the user can only delete their own reviews unless they're an admin
+        $user = auth()->user();
+        if ($user->role !== 'Admin' && $user->member && $user->member->member_id != $review->member_id) {
+            return redirect()->back()->withErrors([
+                'error' => 'You can only delete your own reviews.'
+            ]);
+        }
+        
         $review->delete();
 
-        return back()->with('status', 'Review removed.');
+        return back()->with('status', 'Review deleted successfully.');
+    }
+    
+    /**
+     * Verify that a member has borrowed and returned a specific book.
+     *
+     * @param int $bookId
+     * @param int $memberId
+     * @return bool
+     */
+    protected function verifyBorrowedByMember($bookId, $memberId): bool
+    {
+        return \App\Models\Log_Pinjam_Buku::where('book_id', $bookId)
+            ->where('member_id', $memberId)
+            ->where('status', 'returned')
+            ->exists();
     }
 }

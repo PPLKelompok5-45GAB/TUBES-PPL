@@ -38,9 +38,21 @@ class ProfileController extends Controller
             abort(403, 'Unauthorized');
         }
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'firstname' => ['nullable', 'string', 'max:255'],
+            'lastname' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+            'country' => ['nullable', 'string', 'max:255'],
+            'postal' => ['nullable', 'string', 'max:255'],
+            'about' => ['nullable', 'string', 'max:1000'],
         ]);
-        $user->name = $validated['name'];
+        $user->firstname = $validated['firstname'] ?? null;
+        $user->lastname = $validated['lastname'] ?? null;
+        $user->address = $validated['address'] ?? null;
+        $user->city = $validated['city'] ?? null;
+        $user->country = $validated['country'] ?? null;
+        $user->postal = $validated['postal'] ?? null;
+        $user->about = $validated['about'] ?? null;
         $user->save();
         return back()->with('status', 'Profile updated!');
     }

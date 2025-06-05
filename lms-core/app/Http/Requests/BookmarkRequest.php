@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class BookmarkRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, array<int, string>>
+     */
+    public function rules(): array
+    {
+        return [
+            'book_id' => ['required', 'exists:buku,book_id'],
+            'member_id' => ['required', 'exists:member,member_id'],
+            'page_number' => ['nullable', 'integer', 'min:1'],
+            'notes' => ['nullable', 'string', 'max:1000'],
+        ];
+    }
+}

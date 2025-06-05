@@ -12,12 +12,14 @@ return new class () extends Migration {
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->increments('admin_id'); // Make admin_id auto-increment primary key
+            $table->unsignedBigInteger('user_id')->nullable()->unique();
             $table->string('name', 255);
             $table->string('email', 255)->unique();
             $table->string('phone', 50)->nullable();
             $table->text('address')->nullable();
             $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
